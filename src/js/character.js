@@ -1,20 +1,30 @@
 export default class Character {
-  constructor(name, type) {
-
-  if (name.length < 2 || name.length > 10) {
-      throw new Error("Имя должно быть от 2 до 10 символов.");
+  constructor(name) {
+    this.name = name;
+    this.attackValue = 50;
+    this.stonedStatus = false;
   }
 
-  const types = ['Bowman', 'Swordsman', 'Magician', 'Daemon', 'Undead', 'Zombie'];
-  if (!types.includes(type)) {
-      throw new Error("Такого типа персонажа нет.");
+  get attack() {
+    return (distance) => {
+      let attack = this.attackValue - 10 * (distance - 1);
+      if (this.stoned) {
+        attack -= Math.log2(distance) * 5;
+      }
+      attack = Math.round(attack);
+      return attack;
+    };
   }
 
-  this.name = name;
-  this.type = type;
-  this.health = 100;
-  this.level = 1;
-  this.attack = null;
-  this.defence = null;
+  set attack(value) {
+    this.attackValue = value;
+  }
+
+  get stoned() {
+    return this.stonedStatus;
+  }
+
+  set stoned(state) {
+    this.stonedStatus = state;
   }
 }
